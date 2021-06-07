@@ -27,8 +27,9 @@ namespace InventoryViewer
         public static Inventory inventory;
         // Timer to update the database every minute
         private static DispatcherTimer timer;
+        // TODO: Remove this value, using a value on Inventory directly now
         // Returns the low threshold
-        public static int CountLowThreshold { get; private set; }
+        //public static int CountLowThreshold { get; private set; }
         private static void UpdateItemIDs()
         {
             // Clear existing IDs since we're about to read them all again
@@ -65,7 +66,7 @@ namespace InventoryViewer
         {
             DatabaseInfo dbi = ReadDBInfo(); // Read the database config from file
             inventory = new Inventory(dbi.host, dbi.database, dbi.username, dbi.password); // Create a new database data connection
-            CountLowThreshold = dbi.countLowThreshold;
+            inventory.LowInventoryThreshold = dbi.countLowThreshold;
             UpdateData(); // Update the data
 
             // Update the data again every ten seconds

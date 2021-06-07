@@ -36,6 +36,14 @@ namespace InventoryViewer
             /// Quantity reserved; on an SO
             /// </summary>
             public int numReserved { get; set; }
+            /// <summary>
+            /// Low inventory threshold value. Set by the inventory class, not the database.
+            /// </summary>
+            public int threshold { get; set; }
+            /// <summary>
+            /// Returns true if the onHand + onOrder is below or equal to the low inventory threshold.
+            /// </summary>
+            public bool isBelowThreshold { get { return (onHand + onOrder) <= threshold; } }
         }
 
         // Contains the connection string we'll use to connect to the database
@@ -48,6 +56,11 @@ namespace InventoryViewer
         public List<string> itemIDs { get; set; }
         // List of inventory items output from database
         public ObservableCollection<InventoryItem> itemsList;
+
+        /// <summary>
+        /// Low inventory threshold. If on hand plus on order inventory is less than or equal to this value the item will be flagged as low.
+        /// </summary>
+        public int LowInventoryThreshold { get; set; } = 0;
 
         /// <summary>
         /// Creates a new inventory object.
@@ -92,7 +105,7 @@ namespace InventoryViewer
                 int onorder = reader.GetInt32("QuantityOnOrder");
                 int reserved = reader.GetInt32("QuantityReserved");
                 // Add a new inventory item to the list
-                itemsList.Add(new InventoryItem { itemID = id, itemDescription = desc, onHand = onhand, onOrder = onorder, numReserved = reserved });
+                itemsList.Add(new InventoryItem { itemID = id, itemDescription = desc, onHand = onhand, onOrder = onorder, numReserved = reserved, threshold = LowInventoryThreshold });
             }
             // Clean up our reader and command and close the DB connection
             reader.Close();
