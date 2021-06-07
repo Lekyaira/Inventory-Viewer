@@ -27,7 +27,6 @@ namespace InventoryViewer
 
             Program.Start(); // Initialize the program and start reading data
             lsbInventoryItems.ItemsSource = Program.inventory.itemsList; // Bind data to the listbox
-            CountLowThreshold = Program.CountLowThreshold;
         }
     }
 }
