@@ -43,7 +43,7 @@ namespace InventoryViewer
             /// <summary>
             /// Returns true if the onHand + onOrder is below or equal to the low inventory threshold.
             /// </summary>
-            public bool isBelowThreshold { get { return (onHand + onOrder) <= threshold; } }
+            public bool isBelowThreshold { get { return ((onHand + onOrder) - numReserved) <= threshold; } }
         }
 
         // Contains the connection string we'll use to connect to the database
