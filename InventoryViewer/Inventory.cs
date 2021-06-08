@@ -53,14 +53,9 @@ namespace InventoryViewer
         private SqlConnection dbConnection;
 
         // List of itemIDs we're looking up in database
-        public List<string> itemIDs { get; set; }
+        public Dictionary<string, int> itemIDs { get; private set; }
         // List of inventory items output from database
         public ObservableCollection<InventoryItem> itemsList;
-
-        /// <summary>
-        /// Low inventory threshold. If on hand plus on order inventory is less than or equal to this value the item will be flagged as low.
-        /// </summary>
-        public int LowInventoryThreshold { get; set; } = 0;
 
         /// <summary>
         /// Creates a new inventory object.
@@ -76,9 +71,8 @@ namespace InventoryViewer
             // Initialize the database connection
             dbConnection = new SqlConnection(dbConnectionString);
 
-            //itemsList = new List<InventoryItem>(); // Initialize items list
             itemsList = new ObservableCollection<InventoryItem>();
-            itemIDs = new List<string>(); // Initialize the itemIDs list
+            itemIDs = new Dictionary<string, int>(); // Initialize the itemIDs list
         }
 
         /// <summary>
@@ -105,7 +99,7 @@ namespace InventoryViewer
                 int onorder = reader.GetInt32("QuantityOnOrder");
                 int reserved = reader.GetInt32("QuantityReserved");
                 // Add a new inventory item to the list
-                itemsList.Add(new InventoryItem { itemID = id, itemDescription = desc, onHand = onhand, onOrder = onorder, numReserved = reserved, threshold = LowInventoryThreshold });
+                itemsList.Add(new InventoryItem { itemID = id, itemDescription = desc, onHand = onhand, onOrder = onorder, numReserved = reserved, threshold = itemIDs[id] });
             }
             // Clean up our reader and command and close the DB connection
             reader.Close();
@@ -116,9 +110,9 @@ namespace InventoryViewer
         private string BuildLookupQuery()
         {
             List<string> queries = new List<string>(); // List of where queries to be joined by 'or'
-            foreach(string id in itemIDs) // Loop through the IDs and build a where query for each. Add it to the list
+            foreach(KeyValuePair<string, int> id in itemIDs) // Loop through the IDs and build a where query for each. Add it to the list
             {
-                queries.Add($"ItemID = '{id}'");
+                queries.Add($"ItemID = '{id.Key}'");
             }
             // Join the list together with 'or's and return the new string
             return string.Join(" OR ", queries);

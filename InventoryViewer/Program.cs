@@ -18,7 +18,6 @@ namespace InventoryViewer
             public string database { get; set; }
             public string username { get; set; }
             public string password { get; set; }
-            public int countLowThreshold { get; set; }
         }
 
         /// <summary>
@@ -35,7 +34,9 @@ namespace InventoryViewer
             string[] lines = System.IO.File.ReadAllLines("ItemIDs.txt");
             foreach(string line in lines) // For each line
             {
-                inventory.itemIDs.Add(line); // Add it to the itemIDs that we're looking up in the database
+                //inventory.itemIDs.Add(line); // Add it to the itemIDs that we're looking up in the database
+                string[] values = line.Split(',');
+                inventory.itemIDs.Add(values[0].Trim(), int.Parse(values[1].Trim()));
             }
         }
 
@@ -63,7 +64,6 @@ namespace InventoryViewer
         {
             DatabaseInfo dbi = ReadDBInfo(); // Read the database config from file
             inventory = new Inventory(dbi.host, dbi.database, dbi.username, dbi.password); // Create a new database data connection
-            inventory.LowInventoryThreshold = dbi.countLowThreshold;
             UpdateData(); // Update the data
 
             // Update the data again every ten seconds
