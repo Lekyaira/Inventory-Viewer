@@ -36,7 +36,7 @@ namespace InventoryViewer
             {
                 //inventory.itemIDs.Add(line); // Add it to the itemIDs that we're looking up in the database
                 string[] values = line.Split(',');
-                inventory.itemIDs.Add(values[0].Trim(), int.Parse(values[1].Trim()));
+                inventory.itemIDs[values[0].Trim()] = int.Parse(values[1].Trim());
             }
         }
 
