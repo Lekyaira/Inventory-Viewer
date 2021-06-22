@@ -20,6 +20,12 @@ namespace InventoryViewer
             public string password { get; set; }
         }
 
+        private struct Credentials
+        {
+            public string username { get; private set; }
+            public string password { get; private set; }
+        }
+
         /// <summary>
         /// Database inventory information
         /// </summary>
@@ -54,6 +60,11 @@ namespace InventoryViewer
         {
             UpdateItemIDs(); // Update the list of items we're pulling data about
             inventory.UpdateInventory(); // Pull data from the database
+        }
+
+        private static void GetCredentials()
+        {
+
         }
 
         /// <summary>
