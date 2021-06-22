@@ -9,7 +9,7 @@ using System.Windows.Threading;
 
 namespace InventoryViewer
 {
-    static class Program
+    public static class Program
     {
         // Struct to hold database login information
         private struct DatabaseInfo
@@ -20,10 +20,10 @@ namespace InventoryViewer
             public string password { get; set; }
         }
 
-        private struct Credentials
+        public struct Credentials
         {
-            public string username { get; private set; }
-            public string password { get; private set; }
+            public string username { get; set; }
+            public string password { get; set; }
         }
 
         /// <summary>
@@ -62,19 +62,14 @@ namespace InventoryViewer
             inventory.UpdateInventory(); // Pull data from the database
         }
 
-        private static void GetCredentials()
-        {
-
-        }
-
         /// <summary>
         ///  Initializes system and starts polling data.
         ///  Must be called before any other calls!
         /// </summary>
-        public static void Start()
+        public static void Start(Credentials creds)
         {
             DatabaseInfo dbi = ReadDBInfo(); // Read the database config from file
-            inventory = new Inventory(dbi.host, dbi.database, dbi.username, dbi.password); // Create a new database data connection
+            inventory = new Inventory(dbi.host, dbi.database, creds.username, creds.password); // Create a new database data connection
             UpdateData(); // Update the data
 
             // Update the data again every ten seconds

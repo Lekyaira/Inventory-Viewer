@@ -19,23 +19,40 @@ namespace InventoryViewer
     /// </summary>
     public partial class LoginDialog : Window
     {
-        public static readonly DependencyProperty usernameProperty = DependencyProperty.Register("username", typeof(string), typeof(LoginDialog));
+        private static readonly DependencyProperty usernameProperty = DependencyProperty.Register("username", typeof(string), typeof(LoginDialog));
         public string username
         {
             get { return (string)GetValue(usernameProperty); }
             set { SetValue(usernameProperty, value);  }
         }
 
-        public static readonly DependencyProperty passwordProperty = DependencyProperty.Register("password", typeof(string), typeof(LoginDialog));
+        private static readonly DependencyProperty passwordProperty = DependencyProperty.Register("password", typeof(string), typeof(LoginDialog));
         public string password
         {
             get { return (string)GetValue(passwordProperty); }
             set { SetValue(passwordProperty, value); }
         }
 
-        public LoginDialog()
+        private Program.Credentials credentials;
+
+        public LoginDialog(Program.Credentials credentials)
         {
             InitializeComponent();
+
+            this.credentials = credentials;
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            credentials.username = username;
+            credentials.password = password;
+            DialogResult = true;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            //Close();
         }
     }
 }

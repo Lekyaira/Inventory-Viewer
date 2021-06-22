@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 
 namespace InventoryViewer
 {
-    class Inventory
+    public class Inventory
     {
         /// <summary>
         /// Represents an inventory item
