@@ -25,12 +25,11 @@ namespace InventoryViewer
         {
             InitializeComponent();
 
-            Program.Credentials credentials = new Program.Credentials();
-            LoginDialog login = new LoginDialog(credentials);
+            LoginDialog login = new LoginDialog();
             login.ShowDialog();
             if ((bool)login.DialogResult)
             {
-                Program.Start(credentials); // Initialize the program and start reading data
+                Program.Start(login.username, login.password); // Initialize the program and start reading data
                 lsbInventoryItems.ItemsSource = Program.inventory.itemsList; // Bind data to the listbox
             } else
             {

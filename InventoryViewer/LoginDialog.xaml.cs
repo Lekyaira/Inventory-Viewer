@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Security;
 
 namespace InventoryViewer
 {
@@ -19,40 +20,27 @@ namespace InventoryViewer
     /// </summary>
     public partial class LoginDialog : Window
     {
-        private static readonly DependencyProperty usernameProperty = DependencyProperty.Register("username", typeof(string), typeof(LoginDialog));
-        public string username
-        {
-            get { return (string)GetValue(usernameProperty); }
-            set { SetValue(usernameProperty, value);  }
-        }
+        public string username { get; private set; }
 
-        private static readonly DependencyProperty passwordProperty = DependencyProperty.Register("password", typeof(string), typeof(LoginDialog));
-        public string password
-        {
-            get { return (string)GetValue(passwordProperty); }
-            set { SetValue(passwordProperty, value); }
-        }
+        public SecureString password { get; private set; }
 
-        private Program.Credentials credentials;
-
-        public LoginDialog(Program.Credentials credentials)
+        public LoginDialog()
         {
             InitializeComponent();
-
-            this.credentials = credentials;
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            credentials.username = username;
-            credentials.password = password;
-            DialogResult = true;
+            // Set our username and password properties
+            username = txtUsername.Text;
+            password = pwbPassword.SecurePassword;
+            password.MakeReadOnly();  // We don't want password to be written to anymore.
+            DialogResult = true; // User clicked "Login" button
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
-            //Close();
+            DialogResult = false; // User cancelled dialog
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Security;
 
 namespace InventoryViewer
 {
@@ -64,12 +65,14 @@ namespace InventoryViewer
         /// <param name="database">Name of Tigerpaw database</param>
         /// <param name="username">Credentials username</param>
         /// <param name="password">Credentials password</param>
-        public Inventory(string dataServer, string database, string username, string password)
+        public Inventory(string dataServer, string database, string username, SecureString password)
         {
+            // Construct the SQL credentials object
+            SqlCredential sqlCred = new SqlCredential(username, password);
             // Construct the database connection string
-            dbConnectionString = $"Data Source={dataServer};Initial Catalog={database};User ID={username};Password={password}";
+            dbConnectionString = $"Data Source={dataServer};Initial Catalog={database}";
             // Initialize the database connection
-            dbConnection = new SqlConnection(dbConnectionString);
+            dbConnection = new SqlConnection(dbConnectionString, sqlCred);
 
             itemsList = new ObservableCollection<InventoryItem>();
             itemIDs = new Dictionary<string, int>(); // Initialize the itemIDs list
