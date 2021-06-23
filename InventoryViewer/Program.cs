@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Windows.Threading;
+using System.Security;
 
 namespace InventoryViewer
 {
-    static class Program
+    public static class Program
     {
         // Struct to hold database login information
         private struct DatabaseInfo
         {
             public string host { get; set; }
             public string database { get; set; }
-            public string username { get; set; }
-            public string password { get; set; }
         }
 
         /// <summary>
@@ -60,10 +59,10 @@ namespace InventoryViewer
         ///  Initializes system and starts polling data.
         ///  Must be called before any other calls!
         /// </summary>
-        public static void Start()
+        public static void Start(string username, SecureString password)
         {
             DatabaseInfo dbi = ReadDBInfo(); // Read the database config from file
-            inventory = new Inventory(dbi.host, dbi.database, dbi.username, dbi.password); // Create a new database data connection
+            inventory = new Inventory(dbi.host, dbi.database, username, password); // Create a new database data connection
             UpdateData(); // Update the data
 
             // Update the data again every ten seconds
