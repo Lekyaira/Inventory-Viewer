@@ -17,7 +17,13 @@
         </Style>
         <DataTemplate x:Key="inventoryTemplate">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding itemID}" Width="120" />
+                <TextBlock Text="{Binding itemID}" Width="120" ContextMenuOpening="ItemID_ContextMenuOpening" >
+                    <TextBlock.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Copy to Clipboard" Click="CopyToClipboard_Click"/>
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
+                </TextBlock>
                 <TextBlock Text="{Binding itemDescription}" Width="400" />
                 <TextBlock Text="{Binding onHand}" Width="60" TextAlignment="Center" Style="{StaticResource txtInventoryCountStyle}"/>
                 <TextBlock Text="{Binding onOrder}" Width="60" TextAlignment="Center" Style="{StaticResource txtInventoryCountStyle}"/>

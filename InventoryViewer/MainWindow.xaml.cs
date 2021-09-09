@@ -20,6 +20,8 @@ namespace InventoryViewer
     /// </summary>
     public partial class MainWindow : Window
     {
+        TextBlock copyBox;
+
         public int CountLowThreshold { get; set; }
         public MainWindow()
         {
@@ -35,6 +37,19 @@ namespace InventoryViewer
             {
                 Close();
             }
+        }
+
+        private void CopyToClipboard_Click(object sender, RoutedEventArgs e)
+        {
+            TextBox box = new TextBox();
+            box.Text = copyBox.Text;
+            box.SelectAll();
+            box.Copy();
+        }
+
+        private void ItemID_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            copyBox = (TextBlock)e.OriginalSource;
         }
     }
 }
